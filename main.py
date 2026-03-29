@@ -3,18 +3,17 @@ from sqlmodel import Session
 from models import CreateRule
 from database import create_db_and_tables, get_session
 from service import RuleService, RuleAlreadyExistsError, RuleNotFoundError
+from contextlib import asynccontextmanager 
 
-app = FastAPI()
 rule_service = RuleService()
 
-
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     create_db_and_tables()
-
-@app.on_event("shutdown")
-def on_shutdown():
+    yield
     print("Application shutting down")
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def get_rules(session: Session = Depends(get_session)):
