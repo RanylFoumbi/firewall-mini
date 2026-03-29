@@ -1,2 +1,7 @@
-fastapi[standard]==0.113.0
+fastapi==0.113.0
+uvicorn==0.30.6
 sqlmodel==0.0.37
+
+#test
+httpx==0.28.1
+pytest==9.0.2
